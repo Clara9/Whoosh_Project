@@ -27,7 +27,7 @@ cursor = conn.cursor()
 def search():
     if request.method == "POST":
         # print(request.args)
-        
+
         # kw = request.form['keyword']
         # if kw == None:
         s = Search()
@@ -53,7 +53,7 @@ def search():
 def write_data():
     if not os.path.exists("indexdir"):
         os.mkdir("indexdir")
-        
+
     schema = Schema(title=TEXT(stored=True), content=TEXT(stored = True))
 
     ix = index.create_in("indexdir", schema)
@@ -61,10 +61,11 @@ def write_data():
     writer = ix.writer()
     for i in range(len(titles)):
         writer.add_document(title = titles[i], content = texts[i])
-    
+
     writer.commit()
 
 if __name__ == '__main__':
     app.debug = True
     # write_data()
-    app.run()
+    app.run(host='https://seans-python3-flask-rest.herokuapp.com',port=5000,debug=True)
+
