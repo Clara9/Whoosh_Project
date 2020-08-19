@@ -67,5 +67,5 @@ def write_data():
 if __name__ == '__main__':
     app.debug = True
     # write_data()
-    app.run(host='https://seans-python3-flask-rest.herokuapp.com',port=5000,debug=True)
+    app.run(host='https://whooshhproject.herokuapp.com',port=5000,debug=True)
 
