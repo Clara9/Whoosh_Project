@@ -4,4 +4,4 @@ Task List
 1. Search keywords from abstracts
 2. Find out definitions of keywords
 
-run hello.py to start server
+Start website: Run hello.py to start server
