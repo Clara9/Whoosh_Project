@@ -13,4 +13,5 @@
 Screenshots of examples.
 
 **Notes**
+
 To reduce time for server response, samples in keyword search include the first 3000 abstracts, and sammples in definition search include 1000 abstracts.
