@@ -2,7 +2,7 @@
 
 Task List
 1. Search keywords from abstracts
-2. Find out definitions of keywords
+2. Find out definition sentences of keywords
 
 Procedure
 1. Start website: Run python3 app.py to start server
