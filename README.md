@@ -5,8 +5,8 @@ Task List
 2. Find out definitions of keywords
 
 Procedure
-1. Start website: Run python3 hello.py to start server
-2. Go to http://localhost:5000/search
+1. Start website: Run python3 app.py to start server
+2. Go to http://localhost:8000/search
 
 Search
 1. Enter keyword in first search box to search for ranked papers
