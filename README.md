@@ -9,8 +9,8 @@
 2. Enter definition word in second search box to search for definitions
 
 **Examples**
-
-Screenshots of examples.
+1. Input matrix in the first searchbox.
+2. Input theory in the second searchbox.
 
 **Notes**
 
