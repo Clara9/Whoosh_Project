@@ -6,7 +6,7 @@ Task List
 
 Procedure
 1. Start website: Run python3 app.py to start server
-2. Go to http://localhost:8000/search
+2. Go to http://localhost:8000
 
 Search
 1. Enter keyword in first search box to search for ranked papers
