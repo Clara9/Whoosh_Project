@@ -1,4 +1,6 @@
+appdirs==1.4.4
 appnope==0.1.0
+asgiref==3.2.10
 attrs==19.3.0
 backcall==0.2.0
 bleach==3.1.5
@@ -12,14 +14,21 @@ cycler==0.10.0
 cymem==2.0.3
 decorator==4.4.2
 defusedxml==0.6.0
+distlib==0.3.1
+dj-database-url==0.5.0
+Django==3.1
+django-core==1.4.1
+django-heroku==0.3.1
 en==0.0.1
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.1/en_core_web_sm-2.3.1.tar.gz
 entrypoints==0.3
 Faker==4.1.1
+filelock==3.0.12
 Flask==1.1.2
 Flask-MySQL==1.5.1
 Flask-SQLAlchemy==2.4.4
 Flask-WhooshAlchemy==0.56
+gunicorn==20.0.4
 hupper==1.10.2
 idna==2.10
 influxdb==5.3.0
@@ -67,6 +76,7 @@ prettytable==0.7.2
 prometheus-client==0.8.0
 prompt-toolkit==3.0.5
 protobuf==3.12.2
+psycopg2==2.8.5
 ptyprocess==0.6.0
 Pygments==2.6.1
 PyMySQL==0.10.0
@@ -85,6 +95,7 @@ simplejson==3.17.2
 six==1.15.0
 spacy==2.3.2
 SQLAlchemy==1.3.19
+sqlparse==0.3.1
 srsly==1.0.2
 terminado==0.8.3
 testpath==0.4.4
@@ -96,12 +107,14 @@ traitlets==4.3.3
 translationstring==1.4
 urllib3==1.25.10
 venusian==3.0.0
+virtualenv==20.0.31
 waitress==1.4.4
 wasabi==0.7.1
 wcwidth==0.2.5
 webencodings==0.5.1
 WebOb==1.8.6
 Werkzeug==1.0.1
+whitenoise==5.2.0
 Whoosh==2.7.4
 widgetsnbextension==3.5.1
 zope.deprecation==4.4.0
