@@ -7,15 +7,16 @@ from whoosh import fields
 from whoosh.qparser import QueryParser
 import spacy
 import string
+import nltk
 
 class Search:
     def __init__(self):
-        return
-    
+        nltk.data.path.append('./nltk_data/')
+
     def search(self, keyword):
         if not os.path.exists("indexdir"):
             os.mkdir("indexdir")
-            
+
         schema = Schema(title=TEXT(stored=True), content=TEXT(stored = True))
 
         ix = index.create_in("indexdir", schema)
@@ -24,7 +25,7 @@ class Search:
             texts = list(f)
         with open('./data/sample-title.txt') as f2:
             titles = list(f2)
-        
+
         writer = ix.writer()
         for i in range(len(titles)):
             writer.add_document(title = titles[i], content = texts[i])
@@ -50,7 +51,7 @@ class Search:
     #         for hit in results:
     #             print(hit.matched_terms())
         return self.return_tuples(results)
-    
+
     def find_definition(self, df):
         nlp = spacy.load('en')
         arr = []
@@ -65,7 +66,7 @@ class Search:
                 if df in tmp and text not in arr:
                     arr.append(text)
         return arr
-        
+
     def return_tuples(self, input):
         arr = []
         for value in input:

@@ -23,7 +23,7 @@ conn = mysql.connect()
 cursor = conn.cursor()
 
 #endpoint for search
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def search():
     if request.method == "POST":
         # print(request.args)
@@ -31,7 +31,7 @@ def search():
         # kw = request.form['keyword']
         # if kw == None:
         s = Search()
-        results = ""
+        results, results2 = "", ""
         if list(request.form) == ['keyword']:
             print("1")
             kw = request.form['keyword']
