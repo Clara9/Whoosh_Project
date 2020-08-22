@@ -31,41 +31,24 @@ def search():
         # kw = request.form['keyword']
         # if kw == None:
         s = Search()
-        results, results2 = "", ""
+        results, kw, df = "", "", ""
+        flag = True
         if list(request.form) == ['keyword']:
             print("1")
             kw = request.form['keyword']
-            results = s.search(kw)
-            print(kw)
-            # print(results)
-        if list(request.form) == ['definition']:
+        elif list(request.form) == ['definition']:
             print("2")
             df = request.form['definition']
-            results2 = s.find_definition(df)
-            if len(results2) > 20:
-                results2 = results2[:20]
-            print(df)
-            # print(results)
+        if df == "":
+            flag = True
+        else:
+            flag = False
+        results = s.search2(df, kw, flag)
 
-        return render_template('search.html', data = results, data2 = results2)
+        return render_template('search.html', data = results)
     return render_template('search.html')
-
-def write_data():
-    if not os.path.exists("indexdir"):
-        os.mkdir("indexdir")
-
-    schema = Schema(title=TEXT(stored=True), content=TEXT(stored = True))
-
-    ix = index.create_in("indexdir", schema)
-
-    writer = ix.writer()
-    for i in range(len(titles)):
-        writer.add_document(title = titles[i], content = texts[i])
-
-    writer.commit()
 
 if __name__ == '__main__':
     app.debug = True
     # write_data()
     app.run(host='localhost',port=8000,debug=True)
-

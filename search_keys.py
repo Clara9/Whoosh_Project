@@ -5,6 +5,7 @@ from whoosh import index
 from whoosh.qparser import QueryParser
 from whoosh import fields
 from whoosh.qparser import QueryParser
+from nltk.tokenize import sent_tokenize
 import spacy
 import string
 import nltk
@@ -13,59 +14,88 @@ class Search:
     def __init__(self):
         nltk.data.path.append('./nltk_data/')
 
-    def search(self, keyword):
+    def find_subjectives(self):
+        nlp = spacy.load('en')
+        with open('./data/sample.txt') as f:
+            texts = list(f)[:3000]
+        res = []
+        for text in texts:
+            arr = []
+            sentences = sent_tokenize(text)
+            for sentence in sentences:
+                doc = nlp(sentence)
+                sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj") ]
+                arr.append(sub_toks)
+            res.append(arr)
+        return res
+    
+    def write_to_sub(self, arr):
+        with open('./data/subs.txt', 'w') as f2:
+            for arr in res:
+                f2.write(str(arr).lower() + '\n')
+
+    def search2(self, keyword, definition, flag):
         if not os.path.exists("indexdir"):
             os.mkdir("indexdir")
 
-        schema = Schema(title=TEXT(stored=True), content=TEXT(stored = True))
+        schema = Schema(title=TEXT(stored=True), content=TEXT(stored = True), subjective=TEXT(stored=True))
 
         ix = index.create_in("indexdir", schema)
 
         with open('./data/sample.txt') as f:
             texts = list(f)
+
         with open('./data/sample-title.txt') as f2:
             titles = list(f2)
 
+        with open('./data/subs.txt') as f3:
+            subs = list(f3)
+
         writer = ix.writer()
         for i in range(len(titles)):
-            writer.add_document(title = titles[i], content = texts[i])
+            writer.add_document(title = titles[i], content = texts[i], subjective = subs[i])
         writer.commit()
 
         searcher = ix.searcher()
-        query = QueryParser("content", ix.schema).parse(keyword)
+
+        if flag:
+            query = QueryParser("content", ix.schema).parse(keyword)
+            print(keyword)
+        else:
+            query = QueryParser("subjective", ix.schema).parse(definition)
+            print(definition)
+        
         results = searcher.search(query, terms=True, limit = 20)
+        print(results)
 
         for r in results:
             print(r['title'])
             print(r['content'])
-            # print (r, r.score)
-        # Was this results object created with terms=True?
-#         if results.has_matched_terms():
-#             # What terms matched in the results?
-#             print(results.matched_terms())
 
         # What terms matched in each hit?
-        print ("matched terms")
+        print("matched terms")
         print("Number of matched result is " + str(len(results)))
 
-    #         for hit in results:
-    #             print(hit.matched_terms())
-        return self.return_tuples(results)
+        return results
 
-    def find_definition(self, df):
-        nlp = spacy.load('en')
-        arr = []
-        with open('./data/sample.txt') as f:
-            texts = list(f)[:1000]
-        for text in texts:
-            # print(text)
-            doc = nlp(text)
-            sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj") ]
-            for tok in sub_toks:
-                tmp = str(tok).lower()
-                if df in tmp and text not in arr:
-                    arr.append(text)
-        return arr
+    # def find_definition(self, df):
+    #     nlp = spacy.load('en')
+    #     arr = []
+    #     with open('./data/sample.txt') as f:
+    #         texts = list(f)[:1000]
+    #     for text in texts:
+    #         sentences = sent_tokenize(text)
+    #         for sentence in sentences:
+    #             doc = nlp(sentence)
+    #             # print(doc)
+    #             sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj") ]
+    #             print(sub_toks)
+    #             for tok in sub_toks:
+    #                 tmp = str(tok).lower()
+    #                 if df in tmp or tmp in df:
+    #                     arr.append(text)
+    #                     break
+    #     return arr
 
     def return_tuples(self, input):
         arr = []
@@ -85,9 +115,9 @@ class Search:
 
     def main(self, keyword):
         write_data(self)
-        results = search_word(keyword)
 
     # if __name__ == "__main__":
     #     main('loops')
 # s = Search()
-# s.find_definition('input')
+# res = s.find_subjectives()
+# s.write_to_sub(res)
