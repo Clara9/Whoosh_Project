@@ -1,13 +1,17 @@
 # Whoosh_UI
 
-Task List
-1. Search keywords from abstracts
-2. Find out definitions of keywords
-
-Procedure
+**Procedure**
 1. Start website: Run python3 app.py to start server
 2. Go to http://localhost:8000
 
-Search
+**Functions**
 1. Enter keyword in first search box to search for ranked papers
 2. Enter definition word in second search box to search for definitions
+
+**Examples**
+1. Input matrix in the first searchbox.
+2. Input theory in the second searchbox.
+
+**Notes**
+
+To reduce time for server response, samples in keyword search include the first 3000 abstracts, and samples in definition search include 1000 abstracts.
