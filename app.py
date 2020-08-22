@@ -36,14 +36,26 @@ def search():
         if list(request.form) == ['keyword']:
             print("1")
             kw = request.form['keyword']
+            print(kw)
         elif list(request.form) == ['definition']:
             print("2")
             df = request.form['definition']
+            print(df)
         if df == "":
             flag = True
         else:
             flag = False
-        results = s.search2(df, kw, flag)
+        print(flag)
+
+        results = s.search_terms(kw, df, flag)
+        for r in results:
+            print(r['title'])
+            print(r['content'])
+            print(r['subjective'])
+
+        # What terms matched in each hit?
+        print("matched terms")
+        print("Number of matched result is " + str(len(results)))
 
         return render_template('search.html', data = results)
     return render_template('search.html')

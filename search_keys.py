@@ -1,6 +1,6 @@
 import os.path
 import string
-from whoosh.fields import Schema, TEXT, ID
+from whoosh.fields import Schema, TEXT, KEYWORD
 from whoosh import index
 from whoosh.qparser import QueryParser
 from whoosh import fields
@@ -14,31 +14,12 @@ class Search:
     def __init__(self):
         nltk.data.path.append('./nltk_data/')
 
-    def find_subjectives(self):
-        nlp = spacy.load('en')
-        with open('./data/sample.txt') as f:
-            texts = list(f)[:3000]
-        res = []
-        for text in texts:
-            arr = []
-            sentences = sent_tokenize(text)
-            for sentence in sentences:
-                doc = nlp(sentence)
-                sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj") ]
-                arr.append(sub_toks)
-            res.append(arr)
-        return res
-    
-    def write_to_sub(self, arr):
-        with open('./data/subs.txt', 'w') as f2:
-            for arr in res:
-                f2.write(str(arr).lower() + '\n')
-
-    def search2(self, keyword, definition, flag):
+    def search_terms(self, keyword, definition, flag):
         if not os.path.exists("indexdir"):
             os.mkdir("indexdir")
 
-        schema = Schema(title=TEXT(stored=True), content=TEXT(stored = True), subjective=TEXT(stored=True))
+        schema = Schema(title=TEXT(stored=True), content=TEXT(stored = True), \
+            subjective=KEYWORD(stored=True, lowercase=True, scorable=True))
 
         ix = index.create_in("indexdir", schema)
 
@@ -53,49 +34,38 @@ class Search:
 
         writer = ix.writer()
         for i in range(len(titles)):
-            writer.add_document(title = titles[i], content = texts[i], subjective = subs[i])
+            writer.add_document(title = titles[i], content = texts[i][1:-2], subjective = subs[i])
         writer.commit()
 
-        searcher = ix.searcher()
+        s = ix.searcher()
 
         if flag:
             query = QueryParser("content", ix.schema).parse(keyword)
-            print(keyword)
         else:
             query = QueryParser("subjective", ix.schema).parse(definition)
-            print(definition)
-        
-        results = searcher.search(query, terms=True, limit = 20)
-        print(results)
-
-        for r in results:
-            print(r['title'])
-            print(r['content'])
-
-        # What terms matched in each hit?
-        print("matched terms")
-        print("Number of matched result is " + str(len(results)))
+        results = s.search(query, terms=True, limit = 20)
 
         return results
 
-    # def find_definition(self, df):
-    #     nlp = spacy.load('en')
-    #     arr = []
-    #     with open('./data/sample.txt') as f:
-    #         texts = list(f)[:1000]
-    #     for text in texts:
-    #         sentences = sent_tokenize(text)
-    #         for sentence in sentences:
-    #             doc = nlp(sentence)
-    #             # print(doc)
-    #             sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj") ]
-    #             print(sub_toks)
-    #             for tok in sub_toks:
-    #                 tmp = str(tok).lower()
-    #                 if df in tmp or tmp in df:
-    #                     arr.append(text)
-    #                     break
-    #     return arr
+    def find_subjectives(self):
+        nlp = spacy.load('en')
+        with open('./data/sample.txt') as f:
+            texts = list(f)[:3000]
+        res = []
+        for text in texts:
+            arr = []
+            sentences = sent_tokenize(text)
+            for sentence in sentences:
+                doc = nlp(sentence)
+                sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj")]
+                arr.append(sub_toks)
+            res.append(arr)
+        return res
+
+    def write_to_sub(self, arr):
+        with open('./data/subs.txt', 'w') as f2:
+            for arr in res:
+                f2.write(str(arr).lower() + '\n')
 
     def return_tuples(self, input):
         arr = []
@@ -121,3 +91,4 @@ class Search:
 # s = Search()
 # res = s.find_subjectives()
 # s.write_to_sub(res)
+

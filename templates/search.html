@@ -28,18 +28,10 @@
         {% for item in data %}
             <tr>
                 <!-- <td> <center>{{item}} by {{item.score}}</center></td> -->
-                <td><b>Title: {{item[0]}} </b><br> <b>Text: </b>{{item[1]}}<br>
-                <b>Score: </b>{{item[2]}}<br></td>
+                <td><b>Title: {{item['title']}} </b><br> <b>Text: </b>{{item['content']}}<br>
+                <b>Score: </b>{{item.score}}<br></td>
                 </br>
             </tr>
         {% endfor %}
-        {% for item in data2 %}
-            <tr>
-                <!-- <td> <center>{{item}} by {{item.score}}</center></td> -->
-                <td><b>Matched Abstract: </b>{{item}}<br></td>
-                </br>
-            </tr>
-        {% endfor %}
-        
     </body>
 </html>
