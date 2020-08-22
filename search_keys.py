@@ -51,16 +51,16 @@ class Search:
         nlp = spacy.load('en')
         with open('./data/sample.txt') as f:
             texts = list(f)[:3000]
-        res = []
-        for text in texts:
-            arr = []
-            sentences = sent_tokenize(text)
-            for sentence in sentences:
-                doc = nlp(sentence)
-                sub_toks = [tok for tok in doc if (tok.dep_ == "nsubj")]
-                arr.append(sub_toks)
-            res.append(arr)
-        return res
+            res = []
+            for text in texts:
+                arr = []
+                sentences = sent_tokenize(text)
+                for sentence in sentences:
+                    doc = nlp(sentence)
+                    sub_toks = [str(tok) for tok in doc if (tok.dep_ == "nsubj") ]
+                    arr.extend(sub_toks)
+                res.append(' '.join(arr))
+        print(res)
 
     def write_to_sub(self, arr):
         with open('./data/subs.txt', 'w') as f2:
